@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "CPoint.h"
 
 @interface AppDelegate ()
 
@@ -18,7 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [[[CPoint alloc]init]test];
     
     
     return YES;
