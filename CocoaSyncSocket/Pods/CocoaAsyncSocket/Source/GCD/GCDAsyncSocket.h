@@ -794,34 +794,52 @@ typedef NS_ENUM(NSInteger, GCDAsyncSocketError) {
 
 /**
  * Traditionally sockets are not closed until the conversation is over.
+ //传统的socket是不会关闭的，直到会话结束
  * However, it is technically possible for the remote enpoint to close its write stream.
+ //然而，在技术上我们是很可能会关闭远端的写流，
  * Our socket would then be notified that there is no more data to be read,
+ //我们的socket在没有数据可读的时候将被提醒
  * but our socket would still be writeable and the remote endpoint could continue to receive our data.
- * 
+ * 但是我们的socket将仍然可写而且远端仍然可以接收我们的数据
  * The argument for this confusing functionality stems from the idea that a client could shut down its
+ //支持这个令人困惑的功能其实是来源于一个idea，这个主意是：客户端能够在发送一个请求到服务端后关闭它的写流，因此通知服务端，这里没有更多的请求了。
  * write stream after sending a request to the server, thus notifying the server there are to be no further requests.
  * In practice, however, this technique did little to help server developers.
- * 
+ * 在实际上，然而这个技术对服务端开发者的帮助很小
  * To make matters worse, from a TCP perspective there is no way to tell the difference from a read stream close
+ //更糟糕的是，从TCP的角度来看，这是没法去说明下面二者的不同：一个只关闭读流，一个是完全关闭socket。
  * and a full socket close. They both result in the TCP stack receiving a FIN packet. The only way to tell
+ //他们的结果都是TCP收到一个FIN包，唯一的方法是去继续的对socket进行写
  * is by continuing to write to the socket. If it was only a read stream close, then writes will continue to work.
+ //如果仅仅是读流关闭，那么写仍然工作
  * Otherwise an error will be occur shortly (when the remote end sends us a RST packet).
- * 
+ * 否则会立刻产生一个错误（当远端结束发送给我们一个RST包）
  * In addition to the technical challenges and confusion, many high level socket/stream API's provide
+ //另外技术上的挑战和困惑，很多高级的socket和stream的API提供却不支持处理这样的问题
  * no support for dealing with the problem. If the read stream is closed, the API immediately declares the
+ //如果读流关闭，这个API会立刻告诉socket去关闭
  * socket to be closed, and shuts down the write stream as well. In fact, this is what Apple's CFStream API does.
+ //并且关闭写流。实际上这是苹果CFStream的API做的事
  * It might sound like poor design at first, but in fact it simplifies development.
- * 
+ * 它可能看起来像一开始很不好的设计，但是实际上它对于开发来说很精简
  * The vast majority of the time if the read stream is closed it's because the remote endpoint closed its socket.
+ //绝大部分时间，读流是被关闭的，因为远端关闭了它的socket.
  * Thus it actually makes sense to close the socket at this point.
+ //因此通常我们去关闭当前socket是很有道理的
  * And in fact this is what most networking developers want and expect to happen.
+ //而且实际上，这是大多数网络开发者期盼发生的
  * However, if you are writing a server that interacts with a plethora of clients,
+ //因此，如果你写服务端和过多的客户端交互。
  * you might encounter a client that uses the discouraged technique of shutting down its write stream.
+ //你应该遇到客户端再用过时的技术来关闭它的写流
  * If this is the case, you can set this property to NO,
+ //如果是这种情况，你能够设置这个属性为NO，并且利用socketDidCloseReadStream代理方法
  * and make use of the socketDidCloseReadStream delegate method.
  * 
+ //默认为YES
  * The default value is YES.
 **/
+//自动断开连接，当关闭读流的时候（其实是远端的写流关闭，导致本端读流关闭），如果设置为NO，我们还可以写信息
 @property (atomic, assign, readwrite) BOOL autoDisconnectOnClosedReadStream;
 
 /**

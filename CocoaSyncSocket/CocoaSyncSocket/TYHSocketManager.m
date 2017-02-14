@@ -10,7 +10,7 @@
 #import "GCDAsyncSocket.h" // for TCP
 
 
-static  NSString * Khost = @"10.10.100.40";
+static  NSString * Khost = @"127.0.0.1";
 static const uint16_t Kport = 6969;
 
 
@@ -46,6 +46,7 @@ static const uint16_t Kport = 6969;
 - (BOOL)connect
 {
     return  [gcdSocket connectToHost:Khost onPort:Kport error:nil];
+//    return [gcdSocket connectToUrl:[NSURL fileURLWithPath:@"/Users/tuyaohui/IPCTest"] withTimeout:-1 error:nil];
 }
 
 //断开连接
@@ -54,18 +55,64 @@ static const uint16_t Kport = 6969;
     [gcdSocket disconnect];
 }
 
+//字典转为Json字符串
+- (NSString *)dictionaryToJson:(NSDictionary *)dic
+{
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+
 
 //发送消息
 - (void)sendMsg:(NSString *)msg
-
 {
+   
+    NSData *data  = [@"你好" dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data1  = [@"猪头" dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data2  = [@"先生" dataUsingEncoding:NSUTF8StringEncoding];
     
-    NSData *data  = [msg dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSData *data3  = [@"今天天气好" dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data4  = [@"吃饭了吗" dataUsingEncoding:NSUTF8StringEncoding];
 
+    [self sendData:data :@"txt"];
+    [self sendData:data1 :@"txt"];
+    [self sendData:data2 :@"txt"];
+    [self sendData:data3 :@"txt"];
+    [self sendData:data4 :@"txt"];
+    
+    NSString *filePath = [[NSBundle mainBundle]pathForResource:@"test1" ofType:@"jpg"];
+    
+    NSData *data5 = [NSData dataWithContentsOfFile:filePath];
+    
+    [self sendData:data5 :@"img"];
+}
+
+- (void)sendData:(NSData *)data :(NSString *)type
+{
+    NSUInteger size = data.length;
+    
+    NSMutableDictionary *headDic = [NSMutableDictionary dictionary];
+    [headDic setObject:type forKey:@"type"];
+    [headDic setObject:[NSString stringWithFormat:@"%ld",size] forKey:@"size"];
+    NSString *jsonStr = [self dictionaryToJson:headDic];
+
+    
+    NSData *lengthData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    NSMutableData *mData = [NSMutableData dataWithData:lengthData];
+    //分界
+    [mData appendData:[GCDAsyncSocket CRLFData]];
+    
+    [mData appendData:data];
+    
+    
     //第二个参数，请求超时时间
-    [gcdSocket writeData:data withTimeout:-1 tag:110];
- 
-
+    [gcdSocket writeData:mData withTimeout:-1 tag:110];
+    
 }
 
 //监听最新的消息
@@ -97,6 +144,8 @@ static const uint16_t Kport = 6969;
     NSLog(@"连接成功,host:%@,port:%d",host,port);
     
     [self pullTheMsg];
+    
+    [sock startTLS:nil];
 
     //心跳写在这...
 }
@@ -138,12 +187,12 @@ static const uint16_t Kport = 6969;
 //    [gcdSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:2 maxLength:50000 tag:110];
 
 //貌似触发点
-//- (void)socket:(GCDAsyncSocket *)sock didReadPartialDataOfLength:(NSUInteger)partialLength tag:(long)tag
-//{
-//    
-//    NSLog(@"读的回调,length:%ld,tag:%ld",partialLength,tag);
-//
-//}
+- (void)socket:(GCDAsyncSocket *)sock didReadPartialDataOfLength:(NSUInteger)partialLength tag:(long)tag
+{
+    
+    NSLog(@"读的回调,length:%ld,tag:%ld",partialLength,tag);
+
+}
 
 
 //为上一次设置的读取数据代理续时 (如果设置超时为-1，则永远不会调用到)
