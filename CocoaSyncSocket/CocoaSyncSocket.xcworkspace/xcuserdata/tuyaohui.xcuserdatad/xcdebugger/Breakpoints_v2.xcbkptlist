@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
-            timestampString = "508672315.842477"
+            timestampString = "508922074.313275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "8615"
-            endingLineNumber = "8615"
-            landmarkName = "CFWriteStreamCallback()"
+            startingLineNumber = "8719"
+            endingLineNumber = "8719"
+            landmarkName = "CFReadStreamCallback()"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
-            timestampString = "508672315.842477"
+            timestampString = "508922074.313275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2709"
-            endingLineNumber = "2709"
+            startingLineNumber = "2711"
+            endingLineNumber = "2711"
             landmarkName = "-connectToUrl:withTimeout:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
-            timestampString = "508672315.842477"
+            timestampString = "508922074.313275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3140"
-            endingLineNumber = "3140"
+            startingLineNumber = "3142"
+            endingLineNumber = "3142"
             landmarkName = "-didConnect:"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
-            timestampString = "508672387.704605"
+            timestampString = "508922074.313275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "7608"
-            endingLineNumber = "7608"
+            startingLineNumber = "7707"
+            endingLineNumber = "7707"
             landmarkName = "-ssl_startTLS"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,13 +106,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
-            timestampString = "508672471.171591"
+            timestampString = "508922074.313275"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "8070"
-            endingLineNumber = "8070"
+            startingLineNumber = "8169"
+            endingLineNumber = "8169"
             landmarkName = "-ssl_continueSSLHandshake"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/CocoaAsyncSocket/Source/GCD/GCDAsyncSocket.m"
+            timestampString = "508922074.313275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "8727"
+            endingLineNumber = "8727"
+            landmarkName = "CFWriteStreamCallback()"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
